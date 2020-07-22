@@ -28,12 +28,11 @@ namespace SshScript.Services
 
                 _connected = true;
 
-                ConsoleWriter.Success($"\n Connected to {sshHost} as {sshUsername} \n");
+                ConsoleWriter.Success($"SSH Host: {sshHost}\nSSH User: {sshUsername}\n");
             }
             catch (Exception ex)
             {
-                ConsoleWriter.Error($"\n Failed to connect to {sshHost} as {sshUsername} \nThrew Exception: {ex.Message}");
-
+                ConsoleWriter.Error($"\nFailed to connect to {sshHost} as {sshUsername}\nThrew Exception: {ex.Message}");
             }
         }
 
@@ -47,13 +46,13 @@ namespace SshScript.Services
 
             if (_sfClient.Exists(toPath))
             {
-                ConsoleWriter.Info($"Removing existing docker compose file @ [ {toPath} ]");
+                ConsoleWriter.Error($"Removing existing docker compose file @ [ {toPath} ]");
                 _sfClient.DeleteFile(toPath);
             }
 
             using (var fileStream = new FileStream(fromPath, FileMode.Open, FileAccess.Read))
             {
-                ConsoleWriter.Info($"Creating new docker compose file @ [ {toPath} ]");
+                ConsoleWriter.Warning($"Creating new docker compose file @ [ {toPath} ]");
 
                 var _result = _sfClient.BeginUploadFile(fileStream, toPath);
                 while (!_result.IsCompleted)
@@ -61,7 +60,7 @@ namespace SshScript.Services
                     await Task.Delay(1000);
                 }
 
-                ConsoleWriter.Info($"Docker compose file created @ [ {toPath} ]");
+                ConsoleWriter.Warning($"Docker compose file created @ [ {toPath} ]");
             }
             
         }
@@ -73,10 +72,15 @@ namespace SshScript.Services
 
             try
             {
+
+
                 var _command = _sshClient.CreateCommand(command);
+                
+                ConsoleWriter.Info($"Running command: {_command.CommandText}. Please wait...\n");
+
                 var _output = _command.Execute();
 
-                ConsoleWriter.Info($"command: {_command.CommandText}");
+                ConsoleWriter.Warning($"command: {_command.CommandText}");
                 ConsoleWriter.Primary($"output:\n{_output}");
 
             }
@@ -90,15 +94,8 @@ namespace SshScript.Services
 
         public void Dispose()
         {
-
-            _sfClient.Disconnect();
             _sfClient.Dispose();
-
-            _sshClient.Disconnect();
             _sshClient.Dispose();
-
-            ConsoleWriter.Success("\nSuccess!\n");
-            ConsoleWriter.Success("Closed SSH Connection");
         }
     }
 }

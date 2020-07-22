@@ -57,6 +57,8 @@ namespace SshScript.Commands.Copy
                 await _sshService.ExecuteCommand($"ls -la {Destination.Substring(0, Destination.LastIndexOf("/"))}");
 
                 _sshService.Dispose();
+
+                ConsoleWriter.Success("\nSuccess!");
             }
             catch (Exception ex)
             {

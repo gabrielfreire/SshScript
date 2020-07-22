@@ -51,6 +51,8 @@ namespace SshScript.Commands.Docker
                 await _sshService.ExecuteCommand($"sudo docker {Command}");
 
                 _sshService.Dispose();
+
+                ConsoleWriter.Success("\nSuccess!");
             }
             catch (Exception ex)
             {
