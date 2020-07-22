@@ -12,6 +12,49 @@ CLI application to perform remotel tasks via SSH using username/password authent
 No installation required, just download and extract `SshScript.zip` to anywhere and use it, you can also add the destination to your `PATH` environment variable
 for easy usage.
 
+# Use case
+I am a lazy developer and don't want to SSH into my Azure VM in order to create some files, perform an update or `pull` latest docker images, 
+i want to automate these tasks.
+
+1. Let's update our VM
+	- Create a batch/sh script `update_my_vm.bat`
+
+	the contents for your script should look like this
+	```batch
+	@ECHO off
+
+	set SSH_HOST=10.0.0.1
+	set SSH_USERNAME=myusername
+	set SSH_PASSWORD=mypassword
+
+	REM output current directory and update linux VM
+	call SshScript.exe exec -u %SSH_USERNAME% -p %SSH_PASSWORD% -h %SSH_HOST% -c "pwd && sudo apt update"
+	```
+
+	- Now you can setup an automation process that calls this script from time to time or include a call to it in your CI/CD pipeline.
+
+2. I want to pull the latest images and re-run my docker-compose configuration on a remote VM
+	- Create a batch script `pull_latest_docker_images_and_start.bat`
+
+	The contents for your script should look like this
+	```batch
+	@ECHO off
+
+	set SSH_HOST=10.0.0.1
+	set SSH_USERNAME=myusername
+	set SSH_PASSWORD=mypassword
+
+	REM putput current and list folders (optional)
+	call SshScript.exe exec -u %SSH_USERNAME% -p %SSH_PASSWORD% -h %SSH_HOST% -c "pwd && ls -la /home/me"
+
+	REM update my docker images
+	call SshScript.exe docker-compose -u %SSH_USERNAME% -p %SSH_PASSWORD% -h %SSH_HOST% -c "-f /home/me/docker-compose.yml pull"
+
+	REM run docker images
+	call SshScript.exe docker-compose -u %SSH_USERNAME% -p %SSH_PASSWORD% -h %SSH_HOST% -c "-f /home/me/docker-compose.yml run -d"
+
+	```
+
 # Usage
 
 For any command you want to run, you must provide SSH username and password credentials, see examples below.
