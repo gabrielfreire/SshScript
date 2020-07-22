@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SshScript.Commands
 {
-    [Command(Name = "sshutils", OptionsComparison = System.StringComparison.InvariantCultureIgnoreCase)]
+    [Command(Name = "SshScript.exe", OptionsComparison = System.StringComparison.InvariantCultureIgnoreCase)]
     [VersionOptionFromMember("--version", MemberName = nameof(GetVersion))]
     [Subcommand(typeof(CopySubCommand))]
     [Subcommand(typeof(DockerSubCommand))]
