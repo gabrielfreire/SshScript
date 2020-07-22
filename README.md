@@ -5,11 +5,12 @@ CLI application to perform remotel tasks via SSH using username/password authent
 
 - Windows 10 (the source-code is cross-platform, but i've only published an `.exe` version)
 - [.NET Core 3.1 Runtime 64 bit](https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-desktop-3.1.6-windows-x64-installer) or [.NET Core 3.1 Runtime 32 bit](https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-desktop-3.1.6-windows-x86-installer)
-- [Download SshScript](https://github.com/gabrielfreire/SshScript/raw/master/dist/SshScript.exe)
+- [Download SshScript](https://github.com/gabrielfreire/SshScript/raw/master/dist/SshScript.zip)
 
 # Installation
 
-No installation required, just download and copy `SshScript.exe` to anywhere and use it, you can also add it to your `PATH` environment variable
+No installation required, just download and extract `SshScript.zip` to anywhere and use it, you can also add the destination to your `PATH` environment variable
+for easy usage.
 
 # Usage
 
