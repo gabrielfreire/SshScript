@@ -8,26 +8,17 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace SshScript
-{
-    class Program
+var builder = new HostBuilder()
+    .ConfigureServices((hostContext, services) =>
     {
-        static async Task Main(string[] args)
-        {
-            var builder = new HostBuilder()
-                .ConfigureServices((hostContext, services) =>
-                {
-                    services.AddScoped<ISshService, SshService>();
-                });
+        services.AddScoped<ISshService, SshService>();
+    });
 
-            try
-            {
-                await builder.RunCommandLineApplicationAsync<MainCommand>(args);
-            }
-            catch (Exception ex)
-            {
-                Log.Fatal(ex, "Something wrong happened while trying to start the application");
-            }
-        }
-    }
+try
+{
+    await builder.RunCommandLineApplicationAsync<MainCommand>(args);
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Something wrong happened while trying to start the application");
 }

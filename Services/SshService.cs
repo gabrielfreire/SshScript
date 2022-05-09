@@ -46,7 +46,7 @@ namespace SshScript.Services
 
             if (_sfClient.Exists(toPath))
             {
-                ConsoleWriter.Error($"Removing existing docker compose file @ [ {toPath} ]");
+                ConsoleWriter.Error($"Removing the existing file @ [ {toPath} ]");
                 _sfClient.DeleteFile(toPath);
             }
 
