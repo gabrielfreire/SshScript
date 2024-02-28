@@ -1,24 +1,33 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Renci.SshNet;
-using Serilog;
+﻿using Spectre.Console;
+using Spectre.Console.Cli;
 using SshScript.Commands;
-using SshScript.Services;
 using System;
-using System.IO;
-using System.Threading.Tasks;
 
-var builder = new HostBuilder()
-    .ConfigureServices((hostContext, services) =>
-    {
-        services.AddScoped<ISshService, SshService>();
-    });
+// Need to register the code pages provider for code that parses
+// and later needs ISO-8859-2
+System.Text.Encoding.RegisterProvider(
+    System.Text.CodePagesEncodingProvider.Instance);
+// Test that it loads
+_ = System.Text.Encoding.GetEncoding("ISO-8859-2");
+
+var app = new CommandApp();
+app.Configure((config) =>
+{
+    config.CaseSensitivity(CaseSensitivity.None);
+    config.SetApplicationName("SshScript");
+    config.ValidateExamples();
+
+    config.AddCommand<ExecCommand>("exec").WithDescription("Execute command on any host via SSH");
+    config.AddCommand<CopyCommand>("copy").WithDescription("Copy folders or files to a remote machine via SSH");
+});
 
 try
 {
-    await builder.RunCommandLineApplicationAsync<MainCommand>(args);
+
+    await app.RunAsync(args);
+
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "Something wrong happened while trying to start the application");
+    AnsiConsole.WriteException(ex);
 }
