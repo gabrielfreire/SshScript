@@ -47,10 +47,10 @@ i want to automate these tasks.
 	call SshScript.exe exec -u %SSH_USERNAME% -p %SSH_PASSWORD% -h %SSH_HOST% -c "pwd && ls -la /home/me"
 
 	REM update my docker images
-	call SshScript.exe docker-compose -u %SSH_USERNAME% -p %SSH_PASSWORD% -h %SSH_HOST% -c "-f /home/me/docker-compose.yml pull"
+	call SshScript.exe exec -u %SSH_USERNAME% -p %SSH_PASSWORD% -h %SSH_HOST% -c "docker-compose -f /home/me/docker-compose.yml pull"
 
 	REM run docker images
-	call SshScript.exe docker-compose -u %SSH_USERNAME% -p %SSH_PASSWORD% -h %SSH_HOST% -c "-f /home/me/docker-compose.yml run -d"
+	call SshScript.exe exec -u %SSH_USERNAME% -p %SSH_PASSWORD% -h %SSH_HOST% -c "docker-compose -f /home/me/docker-compose.yml run -d"
 
 	```
 
@@ -59,23 +59,18 @@ i want to automate these tasks.
 For any command you want to run, you must provide SSH username and password credentials, see examples below.
 
 ```bash
-$ SshScript.exe --help
+$ SshScript.exe -h
 
-1.0.0
+USAGE:
+    SshScript [OPTIONS] <COMMAND>
 
-Usage: SshScript.exe [command] [options]
+OPTIONS:
+    -h, --help       Prints help information
+    -v, --version    Prints version information
 
-Options:
-  --version       Show version information
-  --help          Show help information
-
-Commands:
-  copy            Copy folders or files to a remote machine via SSH
-  docker          Run docker commands in a remote machine via SSH
-  docker-compose  Run docker-compose commands in a remote machine via SSH
-  exec            Run any command in a remote machine via SSH
-
-Run 'SshScript.exe [command] --help' for more information about a command.
+COMMANDS:
+    exec    Execute command on any host via SSH
+    copy    Copy folders or files to a remote machine via SSH
 ```
 
 ### Exec
@@ -85,14 +80,14 @@ Run 'SshScript.exe [command] --help' for more information about a command.
 	- `SshScript.exe exec -u yoursshusername -p yoursshpassword -h 10.0.0.1 -c "mkdir /home/mydir"`
 ### Docker
 - list containers
-	- `SshScript.exe docker -u yoursshusername -p yoursshpassword -h 10.0.0.1 -c "ps"`
+	- `SshScript.exe exec -u yoursshusername -p yoursshpassword -h 10.0.0.1 -c "docker ps"`
 - list images
-	- `SshScript.exe docker -u yoursshusername -p yoursshpassword -h 10.0.0.1 -c "images"`
+	- `SshScript.exe exec -u yoursshusername -p yoursshpassword -h 10.0.0.1 -c "docker images"`
 ### Docker Compose
 - list containers
-	- `SshScript.exe docker-compose -u yoursshusername -p yoursshpassword -h 10.0.0.1 -c "build"`
+	- `SshScript.exe exec -u yoursshusername -p yoursshpassword -h 10.0.0.1 -c "docker-compose build"`
 - list images
-	- `SshScript.exe docker-compose -u yoursshusername -p yoursshpassword -h 10.0.0.1 -c "up -d"`
+	- `SshScript.exe exec -u yoursshusername -p yoursshpassword -h 10.0.0.1 -c "docker-compose up -d"`
 
 # TODO
 - configuration file with credentials to simplify commands
