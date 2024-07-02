@@ -14,12 +14,21 @@ namespace SshScript.Services
         private SshClient _sshClient;
         private bool _connected = false;
 
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+        private string? _sshHost;
+        private string? _sshUsername;
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
         public void Init(string sshHost, string sshUsername, string sshPassword)
         {
             try
             {
-
-                var connectionInfo = new ConnectionInfo(sshHost, sshUsername, new PasswordAuthenticationMethod(sshUsername, sshPassword));
+                _sshHost = sshHost;
+                _sshUsername = sshUsername;
+                
+                var connectionInfo = new ConnectionInfo(
+                    sshHost, 
+                    sshUsername, 
+                    new PasswordAuthenticationMethod(sshUsername, sshPassword));
                 _sfClient = new SftpClient(connectionInfo);
                 _sshClient = new SshClient(connectionInfo);
 
@@ -28,11 +37,11 @@ namespace SshScript.Services
 
                 _connected = true;
 
-                ConsoleWriter.Success($"SSH Host: {sshHost}\nSSH User: {sshUsername}\n");
+                //ConsoleWriter.Success($"(CONNECTED) {sshUsername}@{sshHost}");
             }
-            catch (Exception ex)
+            catch
             {
-                ConsoleWriter.Error($"\nFailed to connect to {sshHost} as {sshUsername}\nThrew Exception: {ex.Message}");
+                throw;
             }
         }
 
@@ -46,23 +55,23 @@ namespace SshScript.Services
 
             if (_sfClient.Exists(toPath))
             {
-                ConsoleWriter.Error($"Removing the existing file @ [ {toPath} ]");
+                ConsoleWriter.Error($"Removing the existing file @ {toPath}");
                 _sfClient.DeleteFile(toPath);
             }
 
             using (var fileStream = new FileStream(fromPath, FileMode.Open, FileAccess.Read))
             {
-                ConsoleWriter.Warning($"Creating new docker compose file @ [ {toPath} ]");
+                ConsoleWriter.Warning($"Creating file @ {toPath}");
 
                 var _result = _sfClient.BeginUploadFile(fileStream, toPath);
                 while (!_result.IsCompleted)
                 {
-                    await Task.Delay(1000);
+                    ConsoleWriter.Primary($"Uploading...");
+                    await Task.Delay(200);
                 }
 
-                ConsoleWriter.Warning($"Docker compose file created @ [ {toPath} ]");
+                ConsoleWriter.Warning($"File created @ {toPath}");
             }
-            
         }
 
         public Task ExecuteCommand(string command)
@@ -72,21 +81,16 @@ namespace SshScript.Services
 
             try
             {
-
-
                 var _command = _sshClient.CreateCommand(command);
                 
-                ConsoleWriter.Info($"Running command: {_command.CommandText}. Please wait...\n");
-
                 var _output = _command.Execute();
 
-                ConsoleWriter.Warning($"command: {_command.CommandText}");
-                ConsoleWriter.Primary($"output:\n{_output}");
-
+                ConsoleWriter.Warning($"{_sshUsername}@{_sshHost}: $ {_command.CommandText}");
+                ConsoleWriter.Output($"{_output}");
             }
-            catch (Exception ex)
+            catch
             {
-                ConsoleWriter.Error($"Invalid command {ex.Message}");
+                throw;
             }
 
             return Task.CompletedTask;

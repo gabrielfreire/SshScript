@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Spectre.Console;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,40 +7,31 @@ namespace SshScript
 {
     public static class ConsoleWriter
     {
-        public static void Info(string message)
+        public static void Output(string message)
         {
-            Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine(message);
             Console.ResetColor();
         }
+        public static void Info(string message)
+        {
+            AnsiConsole.MarkupLine($"[white]{message}[/]");
+        }
         public static void Error(string message)
         {
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(message);
-            Console.ResetColor();
+            AnsiConsole.MarkupLine($"[red]{message}[/]");
         }
         public static void Warning(string message)
         {
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(message);
-            Console.ResetColor();
+            AnsiConsole.MarkupLine($"[yellow]{message}[/]");
         }
         public static void Success(string message)
         {
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(message);
-            Console.ResetColor();
+            AnsiConsole.MarkupLine($"[green]{message}[/]");
         }
         public static void Primary(string message)
         {
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine(message);
-            Console.ResetColor();
+            AnsiConsole.MarkupLine($"[blue]{message}[/]");
         }
     }
 }

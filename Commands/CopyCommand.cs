@@ -52,7 +52,6 @@ namespace SshScript.Commands
                 await _sshService.ExecuteCommand($"ls -la {settings.Destination.Substring(0, settings.Destination.LastIndexOf("/"))}");
 
                 _sshService.Dispose();
-                ConsoleWriter.Success("\nSuccess!");
             }
             catch (Exception ex)
             {

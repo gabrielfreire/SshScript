@@ -47,9 +47,7 @@ namespace SshScript.Commands
 
                 await _sshService.ExecuteCommand(settings.Command);
 
-
                 _sshService.Dispose();
-                ConsoleWriter.Success("\nSuccess!");
             }
             catch (Exception ex)
             {
