@@ -1,4 +1,4 @@
-if (Test-Path -Path .\dist) {
+if (Test-Path -Path .\dist\SshScript.exe) {
 	rm .\dist\SshScript.exe
 }
 
