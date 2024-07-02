@@ -12,10 +12,10 @@ No installation required, just download and extract `SshScript.zip` to anywhere 
 for easy usage.
 
 # Use case
-I am a lazy developer and don't want to SSH into my Azure VM in order to create some files, perform an update or `pull` latest docker images, 
-i want to automate these tasks.
+I don't want to have to SSH into my VM in the cloud in order to create some files, perform an update or `pull` latest docker images and
+i'd like to automate these tasks.
 
-1. Let's update our VM
+1. Let's run commands via ssh to update our VM
 	- Create a batch/sh script `update_my_vm.bat`
 
 	the contents for your script should look like this
@@ -74,21 +74,25 @@ COMMANDS:
 ```
 
 ### Exec
+
 - list folders
 	- `SshScript.exe exec -u yoursshusername -p yoursshpassword -h 10.0.0.1 -c "ls -la /home"`
 - Make directory
 	- `SshScript.exe exec -u yoursshusername -p yoursshpassword -h 10.0.0.1 -c "mkdir /home/mydir"`
-### Docker
 - list containers
 	- `SshScript.exe exec -u yoursshusername -p yoursshpassword -h 10.0.0.1 -c "docker ps"`
 - list images
 	- `SshScript.exe exec -u yoursshusername -p yoursshpassword -h 10.0.0.1 -c "docker images"`
-### Docker Compose
 - list containers
 	- `SshScript.exe exec -u yoursshusername -p yoursshpassword -h 10.0.0.1 -c "docker-compose build"`
 - list images
 	- `SshScript.exe exec -u yoursshusername -p yoursshpassword -h 10.0.0.1 -c "docker-compose up -d"`
 
+### Copy files
+
+- copy README.md
+	- `SshScript.exe copy -u yoursshusername -p yoursshpassword -h 10.0.0.1 -f .\README.md -d /home/yoursshusername/README.md`
+	
 # TODO
 - configuration file with credentials to simplify commands
 
