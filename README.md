@@ -3,13 +3,14 @@ CLI application to perform remotel tasks via SSH using username/password authent
 
 # Requirements
 
-- Windows 10 (the source-code is cross-platform, but i've only published an `.exe` version)
-- [Download SshScript](https://github.com/gabrielfreire/SshScript/raw/master/dist/SshScript.zip)
+- Windows 10/Linux/Mac
+- .NET 8 SDK
 
 # Installation
 
-No installation required, just download and extract `SshScript.zip` to anywhere and use it, you can also add the destination to your `PATH` environment variable
-for easy usage.
+1. Clone repo
+2. run `publish.ps1`
+3. Executable will be at `dist/SshScript.exe`
 
 # Use case
 I don't want to have to SSH into my VM in the cloud in order to create some files, perform an update or `pull` latest docker images and
