@@ -1,4 +1,7 @@
 # SSH Script
+
+[Download here](https://github.com/gabrielfreire/SshScript/releases/download/1.0/SshScript.exe)
+
 CLI application to perform remotel tasks via SSH using username/password authentication
 
 # Requirements to run
