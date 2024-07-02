@@ -1,25 +1,36 @@
 # SSH Script
 CLI application to perform remotel tasks via SSH using username/password authentication
 
-# Requirements
+# Requirements to run
 
 - Windows 10/Linux/Mac
+
+# Requirements to build
 - .NET 8 SDK
 
-# Installation
+# Build
 
 1. Clone repo
 2. run `publish.ps1`
 3. Executable will be at `dist/SshScript.exe`
 
-# Use case
-I don't want to have to SSH into my VM in the cloud in order to create some files, perform an update or `pull` latest docker images and
+```powershell
+$ git clone https://github.com/gabrielfreire/SshScript.git
+$ cd SshScript
+$ publish.ps1
+$ dist/SshScript.exe --help
+```
+
+# Why ?
+
+I just wanted to automate remote tasks on multiple VMs and stuff like that without having to always explicitly ssh into them.
+
+**Example:** I don't want to have to SSH into my VM in the cloud in order to create some files, perform an update or `pull` latest docker images and
 i'd like to automate these tasks.
 
 1. Let's run commands via ssh to update our VM
-	- Create a batch/sh script `update_my_vm.bat`
 
-	the contents for your script should look like this
+	Example `batch` script that performs update on linux machine
 	```batch
 	@ECHO off
 
@@ -28,15 +39,13 @@ i'd like to automate these tasks.
 	set SSH_PASSWORD=mypassword
 
 	REM output current directory and update linux VM
-	call SshScript.exe exec -u %SSH_USERNAME% -p %SSH_PASSWORD% -h %SSH_HOST% -c "pwd && sudo apt update"
+	call SshScript.exe exec -u %SSH_USERNAME% -p %SSH_PASSWORD% -h %SSH_HOST% -c "sudo apt update -y && sudo apt upgrade -y"
 	```
 
-	- Now you can setup an automation process that calls this script from time to time or include a call to it in your CI/CD pipeline.
 
 2. I want to pull the latest images and re-run my docker-compose configuration on a remote VM
-	- Create a batch script `pull_latest_docker_images_and_start.bat`
-
-	The contents for your script should look like this
+	
+	Example of `batch` script to manipulate docker images and run containers
 	```batch
 	@ECHO off
 
@@ -74,7 +83,7 @@ COMMANDS:
     copy    Copy folders or files to a remote machine via SSH
 ```
 
-### Exec
+### exec examples
 
 - list folders
 	- `SshScript.exe exec -u yoursshusername -p yoursshpassword -h 10.0.0.1 -c "ls -la /home"`
@@ -89,13 +98,37 @@ COMMANDS:
 - list images
 	- `SshScript.exe exec -u yoursshusername -p yoursshpassword -h 10.0.0.1 -c "docker-compose up -d"`
 
-### Copy files
+### copy examples
 
 - copy README.md
 	- `SshScript.exe copy -u yoursshusername -p yoursshpassword -h 10.0.0.1 -f .\README.md -d /home/yoursshusername/README.md`
 	
 # TODO
-- configuration file with credentials to simplify commands
+- maybe a config file with credentials to simplify commands
+- maybe add option to read creds from env. variables
+
 
 # LICENSE
 SSHScript is MIT Licensed
+
+MIT License
+
+Copyright (c) 2020 Gabriel Augusto de Lima Freire
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
