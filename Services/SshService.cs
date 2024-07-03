@@ -77,8 +77,7 @@ namespace SshScript.Services
 
                 if (_sfClient.Exists(toPath))
                 {
-                    ConsoleWriter.Warning($"Done {toPath}");
-                    _sfClient.DeleteFile(toPath);
+                    ConsoleWriter.Success($"Done {toPath}");
                 }
                 else
                 {
