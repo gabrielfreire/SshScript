@@ -93,11 +93,12 @@ namespace SshScript.Services
 
             try
             {
+                ConsoleWriter.Warning($"{_sshUsername}@{_sshHost}: $ {command}");
+
                 var _command = _sshClient.CreateCommand(command);
                 
                 var _output = _command.Execute();
 
-                ConsoleWriter.Warning($"{_sshUsername}@{_sshHost}: $ {_command.CommandText}");
                 ConsoleWriter.Output($"{_output}");
             }
             catch
