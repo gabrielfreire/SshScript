@@ -49,7 +49,7 @@ namespace SshScript.Commands
                 _sshService.Init(settings.Host, settings.Username, settings.Password);
 
                 await _sshService.CopyFile(settings.File, settings.Destination);
-                await _sshService.ExecuteCommand($"ls -la {settings.Destination.Substring(0, settings.Destination.LastIndexOf("/"))}");
+                //await _sshService.ExecuteCommand($"ls -la {settings.Destination.Substring(0, settings.Destination.LastIndexOf("/"))}");
 
                 _sshService.Dispose();
             }
