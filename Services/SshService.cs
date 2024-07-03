@@ -59,9 +59,14 @@ namespace SshScript.Services
                 _sfClient.DeleteFile(toPath);
             }
 
+            if (!File.Exists(fromPath))
+            {
+                throw new InvalidOperationException($"File {fromPath} doesn't exist");
+            }
+
             using (var fileStream = new FileStream(fromPath, FileMode.Open, FileAccess.Read))
             {
-                ConsoleWriter.Warning($"Creating file @ {toPath}");
+                ConsoleWriter.Warning($"Copying {fromPath} -> {toPath}");
 
                 var _result = _sfClient.BeginUploadFile(fileStream, toPath);
                 while (!_result.IsCompleted)
@@ -70,7 +75,15 @@ namespace SshScript.Services
                     await Task.Delay(200);
                 }
 
-                ConsoleWriter.Warning($"File created @ {toPath}");
+                if (_sfClient.Exists(toPath))
+                {
+                    ConsoleWriter.Warning($"Done {toPath}");
+                    _sfClient.DeleteFile(toPath);
+                }
+                else
+                {
+                    throw new Exception($"File {toPath} was not created for some reason");
+                }
             }
         }
 
